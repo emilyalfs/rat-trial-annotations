@@ -17,6 +17,8 @@
 ## Project Structure
 
 <ul>
+   <li> project-directory 
+      <ul>
      <li>first-frames
            <ul>
                <li>video1-0.json</li>
@@ -47,5 +49,7 @@
    <li>keypoint.py</li>
    <li>other.py</li>
    <li>specify.py</li>
+      </ul>
+   </li>
 </ul>
 
