@@ -2,7 +2,7 @@
 
 1) Generate nose/tail keypoints (optionally prior to this, fine tune keypoint model further)
    - keypoint.py generates file XXX_1_keypoints.csv
-   - <a href="https://ksuemailprod-my.sharepoint.com/:u:/g/personal/emilyalfs_ksu_edu/EW99BUs530xDgoU90q4o76wB-jAxaXD_i1g23yazjWJQ9g?e=wf6Lh7">Pretrained Nose and Tail Model</a>
+   - <a href="https://ksuemailprod-my.sharepoint.com/:u:/g/personal/emilyalfs_ksu_edu/EZn-qk8mN6xHsV6Pn6NT-lkBdotLaGfWNc2d_EJPj6-pDg?e=DTNpS6">Pretrained Nose and Tail Model</a>
 2) Generate frame by frame behavior
    - behavior.py generates file XXX_2_model.csv
 3) Post process general object interaction into specific
