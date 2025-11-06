@@ -12,3 +12,40 @@
 5) Aggregate the model behaviors and the sustained behaviors
    - aggregate.py generates XXX_5_aggregate.csv
 6) Post process all trials to condense results into meaningful output
+
+
+## Project Structure
+
+<ul>
+     <li>first-frames
+           <ul>
+               <li>video1-0.json</li>
+               <li>video1-0.png</li>
+               <li>video2-0.json</li>
+               <li>video2-0.png</li>
+           </ul></li>
+     <li>models
+           <ul>
+               <li>nose-tail-keypoint.pt</li>
+              <li>behavior.pt</li>
+           </ul></li>
+     <li>raw-videos
+           <ul>
+               <li>video1.mp4</li>
+               <li>video2.mp4</li>
+           </ul></li>
+   <li>results
+      <ul>
+         <li>video1_1_keypoints.csv</li>
+         <li>video1_2_model.csv</li>
+         <li>video1_3_post.csv</li>
+         <li>video1_4_other.csv</li>
+         <li>video1_5_aggregate.csv</li>
+      </ul></li>
+   <li>aggregate.py</li>
+   <li>behavior.py</li>
+   <li>keypoint.py</li>
+   <li>other.py</li>
+   <li>specify.py</li>
+</ul>
+
