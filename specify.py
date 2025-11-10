@@ -66,5 +66,31 @@ print("Merge successful! Saved as merged_output.csv.")
 
 #step 4
 
+#get the middle point of bounding boxes of each object
+#and save them in l (lower object) and u(upper object)
+
+
+import json
+
+#load the json file
+with open('path to annotated frame of xxx.mp4 video (json file)') as f:
+    data = json.load(f)
+
+
+#find the coordinates of 'lower_ob' and 'upper_ob'
+shapes = {s['label'].lower(): s['points'] for s in data['shapes']}
+lower = shapes.get('lower_ob')
+upper = shapes.get('upper_ob')
+
+#find the middle point of each bounding box
+
+l = [(lower[0][0]+lower[1][0])/2, (lower[0][1]+lower[1][1])/2] if lower else None
+u = [(upper[0][0]+upper[1][0])/2, (upper[0][1]+upper[1][1])/2] if upper else None
+
+print(f"lower_mid: {l}\nupper_mid: {u}")
+
+
+
+
 
 
