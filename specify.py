@@ -64,7 +64,7 @@ merged_df.to_csv("path to XXX_1_merged.csv", index=False)
 print("Merge successful! Saved as merged_output.csv.")
 
 
-#step 4
+#step 4 for 2 object videos
 
 #get the middle point of bounding boxes of each object
 #and save them in l (lower object) and u(upper object)
@@ -73,7 +73,7 @@ print("Merge successful! Saved as merged_output.csv.")
 import json
 
 #load the json file
-with open('path to annotated frame of xxx.mp4 video (json file)') as f:
+with open('path to annotated frame of XXX.mp4 video (json file)') as f:
     data = json.load(f)
 
 
@@ -89,6 +89,224 @@ u = [(upper[0][0]+upper[1][0])/2, (upper[0][1]+upper[1][1])/2] if upper else Non
 
 print(f"lower_mid: {l}\nupper_mid: {u}")
 
+#step 5 for 2 object videos
+
+#determine specific object interaction based on nose and tail coordinates
+ 
+ 
+import pandas as pd
+import csv
+import math
+
+#read the csv
+df = pd.read_csv("path to XXX_1_merged.csv")
+df = df.where(pd.notna(df), "None")
+df = df.sort_values(by='frame')
+
+# pred = df.values.tolist()
+
+# for i in range(len(pred)):
+#     pred[i][0] = int(pred[i][0])
+# print(pred)
+
+#loop through every frame and conver "object" class to "lower-ob" or "upper-ob"
+
+nose_object = []
+ob = ["lower_ob", "upper_ob"]
+for i in range(len(pred)):
+    if(pred[i][1] == "object"):
+        print("enter")
+        # dist_u = math.sqrt((u[0]-pred[i][1])**2+(u[1]-pred[i][2])**2)
+        # dist_l = math.sqrt((l[0]-pred[i][1])**2+(l[1]-pred[i][2])**2)
+        dist_u = math.sqrt((u[0]-float(pred[i][3]))**2+(u[1]-float(pred[i][4]))**2)
+        dist_l = math.sqrt((l[0]-pred[i][3])**2+(l[1]-pred[i][4])**2)
+        # print("l=",dist_l)
+        # print("u=",dist_u)
+        dist = [dist_l, dist_u]
+        ob = ["lower_ob", "upper_ob"]
+        minimum = dist.index(min(dist))
+        # print(minimum)
+        # print(ob[minimum])
+        d = {}
+        # d.update({"frame":pred[i][0]})
+        # d.update({"nose_x":pred[i][5]})
+        # d.update({"nose_y":pred[i][6]})
+        # d.update({"tail_x":pred[i][7]})
+        # d.update({"tail_y":pred[i][8]})
+        # d.update({"pred_nose_tail":ob[minimum]})
+        # d.update({"pred_cls": pred[i][2]})
+        # d.update({"gt_3cls":pred[i][1]})
+        # # d.update({"pred_emily":pred[i][10]})
+        # nose_object.append(d)
+        d.update({"frame":pred[i][0]})
+        d.update({"nose_x":pred[i][3]})
+        d.update({"nose_y":pred[i][4]})
+        d.update({"tail_x":pred[i][5]})
+        d.update({"tail_y":pred[i][6]})
+        d.update({"pred_nose_tail":ob[minimum]})
+        d.update({"pred_sanaz": pred[i][1]})
+        # d.update({"gt_3cls":pred[i][7]})
+        # d.update({"gt":pred[i][8]})
+        # d.update({"pred_emily":pred[i][10]})
+        nose_object.append(d)
+    else:
+        d = {}
+        d.update({"frame":pred[i][0]})
+        d.update({"nose_x":pred[i][3]})
+        d.update({"nose_y":pred[i][4]})
+        d.update({"tail_x":pred[i][5]})
+        d.update({"tail_y":pred[i][6]})
+        d.update({"pred_nose_tail":pred[i][1]})
+        d.update({"pred_sanaz": pred[i][1]})
+        # d.update({"gt_3cls":pred[i][7]})
+        # d.update({"gt":pred[i][8]})
+        # d.update({"gt_3cls":pred[i][1]})
+        # d.update({"pred_emily":pred[i][10]})
+        nose_object.append(d)
+        
+            
+
+
+# fields = ['frame', 'nose_x', 'nose_y', 'tail_x', 'tail_y', 'pred_cls', 'gt_3cls', 'pred_nose_tail']
+fields = ['frame', 'nose_x', 'nose_y', 'tail_x', 'tail_y', 'pred_cls_model', 'pred_nose_tail']
+
+filename = "path to XXX_1_post.py"
+with open(filename, 'w') as csvfile:
+  writer = csv.DictWriter(csvfile, fieldnames=fields)
+  writer.writeheader()
+  writer.writerows(nose_object)    
+
+
+
+#step 4 for 5 object videos
+
+#get the middle point of bounding boxes of each object
+#and save them in l (lower object) and u(upper object)
+
+import json
+
+#load the json file
+with open('path to annotated frame of XXX.mp4 video (json file)') as f:
+    data = json.load(f)
+
+# Create a dict mapping labels to midpoints
+objs = {
+    s['label']: [
+        (s['points'][0][0] + s['points'][1][0]) / 2,
+        (s['points'][0][1] + s['points'][1][1]) / 2
+    ]
+    for s in data['shapes']
+}
+
+#get the midpoints into different lists
+ob1 = objs.get("ob1", [])
+ob2 = objs.get("ob2", [])
+ob3 = objs.get("ob3", [])
+ob4 = objs.get("ob4", [])
+ob5 = objs.get("ob5", [])
+
+print(ob1)
+print(ob2)
+print(ob3)
+print(ob4)
+print(ob5)
+
+
+
+#step 5 for 5 object videos
+
+
+#5-obj determine the which object based on nose and tail coordinates with nose_tail filled in for a single file
+ 
+import pandas as pd
+import csv
+import math
+
+# ob1 = [ob1_x, ob1_y]
+# ob2 = [ob2_x, ob2_y]
+# ob3 = [ob3_x, ob3_y]
+# ob4 = [ob4_x, ob4_y]
+# ob5 = [ob5_x, ob5_y]
+
+
+df = pd.read_csv("path to XXX_1_merged.csv")
+df = df.where(pd.notna(df), "None")
+df = df.sort_values(by='frame')
+pred = df.values.tolist()
+
+# for i in range(len(pred)):
+#     pred[i][0] = int(pred[i][0])
+# print(pred)
+
+nose_object = []
+
+# od1 = 0
+# od2 = 0
+# od3 = 0
+# od4 = 0
+# od5 = 0
+
+for i in range(len(pred)):
+    if(pred[i][1] == "object"):
+        dist_1 = math.sqrt((ob1[0]-pred[i][3])**2+(ob1[1]-pred[i][4])**2)
+        dist_2 = math.sqrt((ob2[0]-pred[i][3])**2+(ob2[1]-pred[i][4])**2)
+        dist_3 = math.sqrt((ob3[0]-pred[i][3])**2+(ob3[1]-pred[i][4])**2)
+        dist_4 = math.sqrt((ob4[0]-pred[i][3])**2+(ob4[1]-pred[i][4])**2)
+        dist_5 = math.sqrt((ob5[0]-pred[i][3])**2+(ob5[1]-pred[i][4])**2)
+        # print("l=",dist_l)
+        # print("u=",dist_u)
+        dist = [dist_1, dist_2, dist_3, dist_4, dist_5]
+        ob = ["ob1", "ob2", "ob3", "ob4", "ob5"]
+        minimum = dist.index(min(dist))
+        # print(minimum)
+        # print(ob[minimum])
+        d = {}
+        # d.update({"frame":pred[i][0]})
+        # d.update({"nose_x":pred[i][5]})
+        # d.update({"nose_y":pred[i][6]})
+        # d.update({"tail_x":pred[i][7]})
+        # d.update({"tail_y":pred[i][8]})
+        # d.update({"pred_nose_tail":ob[minimum]})
+        # d.update({"pred_cls": pred[i][2]})
+        # d.update({"gt_3cls":pred[i][1]})
+        # # d.update({"pred_emily":pred[i][10]})
+        # nose_object.append(d)
+        d.update({"frame":pred[i][0]})
+        d.update({"nose_x":pred[i][3]})
+        d.update({"nose_y":pred[i][4]})
+        d.update({"tail_x":pred[i][5]})
+        d.update({"tail_y":pred[i][6]})
+        d.update({"pred_nose_tail":ob[minimum]})
+        d.update({"pred_sanaz": pred[i][1]})
+        # d.update({"gt_3cls":pred[i][7]})
+        # d.update({"gt":pred[i][8]})
+        # d.update({"pred_emily":pred[i][10]})
+        nose_object.append(d)
+    else:
+        d = {}
+        d.update({"frame":pred[i][0]})
+        d.update({"nose_x":pred[i][3]})
+        d.update({"nose_y":pred[i][4]})
+        d.update({"tail_x":pred[i][5]})
+        d.update({"tail_y":pred[i][6]})
+        d.update({"pred_nose_tail":pred[i][1]})
+        d.update({"pred_sanaz": pred[i][1]})
+        # d.update({"gt_3cls":pred[i][7]})
+        # d.update({"gt":pred[i][8]})
+        # d.update({"pred_emily":pred[i][10]})
+        nose_object.append(d)
+        
+            
+
+
+# fields = ['frame', 'nose_x', 'nose_y', 'tail_x', 'tail_y', 'pred_cls', 'gt_3cls', 'pred_nose_tail']
+fields = ['frame', 'nose_x', 'nose_y', 'tail_x', 'tail_y', 'pred_cls_model', 'pred_nose_tail']
+
+filename = "/home/a/aliva/venvs/csrnet/rat/final_paper_valid_analysis/individual_m/B6.04_B3_object_interaction.csv"
+with open(filename, 'w') as csvfile:
+  writer = csv.DictWriter(csvfile, fieldnames=fields)
+  writer.writeheader()
+  writer.writerows(nose_object)    
 
 
 
