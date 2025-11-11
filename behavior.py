@@ -100,6 +100,7 @@ def stream_inference(video_path: str,  device: str, batch_size: int):
 
 def save_results(raw_results, short_v_name):
     print(f"Model best: processed {len(raw_results)} frames")
+    
     # Raw CSV (top-1 label per frame)
     with open(f"./results/{short_v_name}_2_model.csv", 'w', newline='') as cf:
         w = csv.writer(cf)
@@ -124,7 +125,8 @@ def main():
         dev = 'cpu'
 
     raw = stream_inference(args.video, dev, args.batch_size)
-    save_results(raw, args.video)
+    short_name = ((args.video).split("/")[-1])[:-4]
+    save_results(raw, short_name)
 
 
 if __name__ == '__main__':
