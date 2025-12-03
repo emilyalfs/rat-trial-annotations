@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#/usr/bin/env python3
 """
 Streamed inference with temporal aggregation (no intermediate frames on disk).
 Outputs:
@@ -8,7 +8,7 @@ Outputs:
 
 import cv2
 import csv
-import argparse
+import sys
 
 import numpy as np
 import torch
@@ -98,35 +98,32 @@ def stream_inference(video_path: str,  device: str, batch_size: int):
 
 # ------------------------- Save -------------------------
 
-def save_results(raw_results, short_v_name):
-    print(f"Model best: processed {len(raw_results)} frames")
+def save_results(raw_results, short_v_name, proj):
+    print(f"Behavior model processed {len(raw_results)} frames")
     
     # Raw CSV (top-1 label per frame)
-    with open(f"./results/{short_v_name}_2_model.csv", 'w', newline='') as cf:
+    with open(f"./{proj}/results/{short_v_name}_2_model.csv", 'w', newline='') as cf:
         w = csv.writer(cf)
         w.writerow(['frame_id', 'label'])
         for fid in sorted(raw_results, key=lambda x: int(x)):
-            w.writerow([fid, raw_results[fid]['pred_class_name']])
+            w.writerow([fid, raw_results[fid]['pred_class_name'].lower()])
 
 
 # ------------------------- CLI -------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="Streamed YOLO11 classification inference with temporal aggregation")
-    parser.add_argument('video', help='Path to video file')
-    parser.add_argument('output_dir', help='Directory to save results')
-    parser.add_argument('--device', default='cuda:0', help='cuda[:id] or cpu (auto-fallback to cpu if CUDA unavailable)')
-    args = parser.parse_args()
+    
 
     # device fallback
-    dev = args.device
+    dev = sys.argv[2]
     if dev.startswith('cuda') and not torch.cuda.is_available():
         print("CUDA not available; falling back to CPU.")
         dev = 'cpu'
-
-    raw = stream_inference(args.video, dev, args.batch_size)
-    short_name = ((args.video).split("/")[-1])[:-4]
-    save_results(raw, short_name)
+    video = sys.argv[1]
+    proj = sys.argv[3]
+    raw = stream_inference(video, dev, 64)
+    short_name = ((video).split("/")[-1])[:-4]
+    save_results(raw, short_name, proj)
 
 
 if __name__ == '__main__':

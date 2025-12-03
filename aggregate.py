@@ -1,5 +1,5 @@
 # combine the specific object interactions with the sustained behaviors
-
+import sys
 import os 
 
 def overwrite_consecutive(data, threshold=60, replacement="none"):
@@ -36,58 +36,64 @@ def overwrite_consecutive(data, threshold=60, replacement="none"):
     return result
 
 
-results_dir = "./result_files/"
+def main():
+    
+    proj = sys.argv[1]
 
-files = os.listdir(results_dir)
-files = [ i for i in files if "_3_post.csv" in i]
+    results_dir = f"./{proj}/results/"
+    files = os.listdir(results_dir)
+    files = [ i for i in files if "_3_post.csv" in i]
+    # Go through each XXXX_3_post.csv to merge it with the XXXX_4_other.csv into XXXX_5_aggregated.py
+    for fil in files:
+        short = fil[:-11] # gets the prefix as len(_3_post.csv) is 11
+        # load XXXX_3_post
+        objet = open(results_dir + fil)
+        object_data = objet.read()
+        objet.close()
 
-# Go through each XXXX_3_post.csv to merge it with the XXXX_4_other.csv into XXXX_5_aggregated.py
-for fil in files:
-    short = fil[:-11] # gets the prefix as len(_3_post.csv) is 11
-
-    # load XXXX_3_post
-    objet = open(results_dir + fil)
-    object_data = objet.read()
-    objet.close()
-
-    # will be frame, ...., pred
-    object_data = object_data.split("\n")[1:]
-    object_data = [i.split(",") for i in object_data]
-    object_data = [i for i in object_data if len(i)>1]
-
-
-    # load XXXX_4_other
-    freeze = open(results_dir + short + "_4_other.csv")
-    freeze_data = freeze.read()
-    freeze.close()
-
-    # will be frame, pred
-    freeze_data = freeze_data.split("\n")
-    freeze_data = [i.split(",") for i in freeze_data]
-    freeze_data = [i for i in freeze_data if len(i)>1]
+        # will be frame, ...., pred
+        object_data = object_data.split("\n")[1:]
+        object_data = [i.split(",") for i in object_data]
+        object_data = [i for i in object_data if len(i)>1]
 
 
-    merge_data = []
+        # load XXXX_4_other
+        freeze = open(results_dir + short + "_4_other.csv")
+        freeze_data = freeze.read()
+        freeze.close()
 
-    num_frames = min(len(object_data),len(freeze_data)) # in case there is a discrepency in # of frames
-    for i in range(num_frames):
-        fr_frame, fr_pred = freeze_data[i][0], freeze_data[i][-1]
-        obj_frame, obj_pred = object_data[i][0], object_data[i][-1]
+        # will be frame, pred
+        freeze_data = freeze_data.split("\n")
+        freeze_data = [i.split(",") for i in freeze_data]
+        freeze_data = [i for i in freeze_data if len(i)>1]
 
-        if fr_frame == obj_frame: # just verify that we are examining the same frame
+
+        merge_data = []
+
+        num_frames = min(len(object_data),len(freeze_data)) # in case there is a discrepency in # of frames
+        for i in range(num_frames):
+            fr_frame, fr_pred = freeze_data[i][0], freeze_data[i][-1]
+            obj_frame, obj_pred = object_data[i][0], object_data[i][-1]
+
             if obj_pred.lower() == "none": # if _3_post has none, then default to _4_other
                 merge_data.append(fr_pred.lower())
             else:
                 merge_data.append(obj_pred.lower())
-        else:
-            print(f"wrong! _4_other: {fr_frame} _3_post: {obj_frame}")
-            break
 
-    # since rest/froze requires 60 cons. frames, make sure it is preserved
-    merg_result = overwrite_consecutive(merge_data,60,"none")
 
-    # will be frame, pred
-    with open(results_dir + short + "_5_aggregated.csv","w") as wrti:
-        wrti.write("frame num, label\n")
-        for i in range(len(merge_data)):
-            wrti.write(f"{i}, {merg_result[i]}\n")
+        # since rest/froze requires 60 cons. frames, make sure it is preserved
+        merg_result = overwrite_consecutive(merge_data,60,"none")
+
+        # will be frame, pred
+        with open(results_dir + short + "_5_aggregated.csv","w") as wrti:
+            wrti.write("frame num, label\n")
+            for i in range(len(merge_data)):
+                wrti.write(f"{i}, {merg_result[i]}\n")
+
+
+    
+
+
+
+if __name__ == '__main__':
+    main()
