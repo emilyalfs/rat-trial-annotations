@@ -2,6 +2,100 @@
 import sys
 import os 
 
+def get_proj_classes(proj):
+    other_path = f"./{proj}/results/"
+    files = os.listdir(other_path)
+    files = [i for i in files if "aggregated.csv" in i]
+    unique_classes = set()
+    for fil in files: 
+        with open(f"{other_path}{fil}",'r') as reder:
+            for line in reder:
+                line = line.strip().split(",")
+                clas = line[-1].strip().lower()
+                unique_classes.add(clas)
+
+    return list(unique_classes)
+
+def condense_dists(proj):
+    file_path = f"./{proj}/results/"
+    files = os.listdir(file_path)
+    files = [i for i in files if "distances.csv" in i]
+
+    all_results = []
+    for f in files:
+        short = f.split("-")[0]
+        pre, post = short.split("_")
+        reader = open(file_path + f)
+        data = reader.read()
+        reader.close()
+
+        data = data.split("\n")[1:-1]
+        data = [i.split(",") for i in data]
+        summer = 0.0
+        for res in data:
+            summer += float(res[1])
+            all_results.append([short,res[0],res[1]])
+        all_results.append([short,"total",summer])
+
+    tot_writer = open(file_path + "final-condensed-butt-dist-cm-per-30-sec.csv",'w')
+    tot_writer.write(f"Individual,Day,Bin (30 seconds),Distance (in CM)\n")
+
+    for d in all_results:
+        pre, post = d[0].split("_")
+        tot_writer.write(f"{pre},{post},{d[1]},{d[2]}\n")
+    tot_writer.close()
+
+
+def condense_bevs(proj):
+    other_path = f"./{proj}/results/"
+    files = os.listdir(other_path)
+    files = [i for i in files if "aggregated.csv" in i]
+    labels = get_proj_classes(proj)
+
+    data_dict = {}
+    all_results = {}
+    for f in files:
+        short = f[:-17]
+
+        for p in labels:
+            data_dict[short][p] = []
+
+        reader = open(other_path + f)
+        data = reader.read()
+        reader.close()
+
+        data = data.strip().split("\n")[1:]
+        data = [i.split(",") for i in data]
+
+        for i in data:
+            idx,name =  i[0],i[1]
+            name = name.strip()
+            name = name.lower()
+            if name in data_dict[short]:
+                data_dict[short][name].append(int(idx))
+
+        all_results[short] = {}
+        for p in data_dict[short]:
+            all_results[short][p] = len(data_dict[short][p])/60
+
+    write_comb = open(f"{other_path}final-condensed-behaviors-in-secs.csv",'w')
+
+    write_comb.write(f"Individual,Day")
+    for i in labels:
+        write_comb.write(f",{i}")
+    write_comb.write("\n")
+
+    for d in data_dict:
+        pre, post = d.split("_")
+        r = all_results[d]
+        write_comb.write(f"{pre},{post}")
+        for i in labels:
+            write_comb.write(f",{r[i]}")
+        write_comb.write("\n")
+
+    write_comb.close()
+
+
 def overwrite_consecutive(data, threshold=60, replacement="none"):
     """
     frozen and resting require consecutive 60 frames
@@ -89,11 +183,8 @@ def main():
             wrti.write("frame num, label\n")
             for i in range(len(merge_data)):
                 wrti.write(f"{i}, {merg_result[i]}\n")
-
-
-    
-
-
+    condense_bevs(proj)
+    condense_dists(proj)
 
 if __name__ == '__main__':
     main()
