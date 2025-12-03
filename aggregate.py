@@ -13,7 +13,7 @@ def get_proj_classes(proj):
                 line = line.strip().split(",")
                 clas = line[-1].strip().lower()
                 unique_classes.add(clas)
-
+    unique_classes.remove('label')
     return list(unique_classes)
 
 def condense_dists(proj):
@@ -37,7 +37,7 @@ def condense_dists(proj):
             all_results.append([short,res[0],res[1]])
         all_results.append([short,"total",summer])
 
-    tot_writer = open(file_path + "final-condensed-butt-dist-cm-per-30-sec.csv",'w')
+    tot_writer = open(file_path + "final-condensed-tail-dist-cm-per-30-sec.csv",'w')
     tot_writer.write(f"Individual,Day,Bin (30 seconds),Distance (in CM)\n")
 
     for d in all_results:
@@ -56,7 +56,7 @@ def condense_bevs(proj):
     all_results = {}
     for f in files:
         short = f[:-17]
-
+        data_dict[short] = {}
         for p in labels:
             data_dict[short][p] = []
 

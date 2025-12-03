@@ -1,0 +1,3 @@
+#ignore results, output, and model directories
+project*/
+models/
