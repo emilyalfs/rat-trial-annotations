@@ -28,7 +28,6 @@ def score_freeze(nose_tails,avg_nt_dist):
                 ty = nose_tails[j][4]
                 tsum += math.sqrt( (tx-asum[2])**2+(ty-asum[3])**2 )/(i-istart+1)
 
-
             moving_now = max(nsum,tsum) > motion_factor*avg_nt_dist
 
             if in_idle and moving_now:   # Was in idle, now moving, log activity range
@@ -77,6 +76,22 @@ def score_rest(nose_tails,avg_nt_dist):
             elif not in_idle and moving_now:
                 istart = i - nf_idle
     return activity
+
+def binned_distance_calc(project,video_short,nose_tail_pos,pixels_per_cm,binframes):
+    with open(f"./{project}/results/{video_short}-distances.csv",'w', newline='') as fout:
+        ibin = 0
+        dsum = 0.0
+        nframes = len(nose_tail_pos)
+        for i in range(1,nframes):
+            px, py = nose_tail_pos[i-1][3], nose_tail_pos[i-1][4]
+            cx, cy = nose_tail_pos[i][3], nose_tail_pos[i][4]
+            dist = ((cx-px)**2+(cy-py)**2)**0.5
+            dsum += dist/pixels_per_cm
+            if (i+1) % binframes == 0 or i == nframes-1:
+                fout.write(f"{ibin},{dsum}\n")
+                dsum = 0.0
+                ibin += 1
+        
 
 def main():
     video_path = sys.argv[1]
@@ -127,6 +142,8 @@ def main():
         for i in merged_res:
             fout.write(",".join(i))
             fout.write("\n")
+
+    binned_distance_calc(proj,short_name,nt_data,pixels_per_cm,binframes)
     print(f"Other model processed {len(merged_res)} frames")
 
 if __name__ == '__main__':
