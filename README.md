@@ -17,38 +17,51 @@ Download pretrained models <a href="https://ksuemailprod-my.sharepoint.com/:u:/g
 ## Project Structure
 
 <ul>
-   <li> project-directory 
+   <li>raw-videos
       <ul>
-     <li>first-frames
-           <ul>
-               <li>video1-0.json</li>
-               <li>video1-0.png</li>
-               <li>video2-0.json</li>
-               <li>video2-0.png</li>
-           </ul></li>
-     <li>models
-           <ul>
-               <li>nose-tail-keypoint.pt</li>
-              <li>behavior.pt</li>
-           </ul></li>
-     <li>raw-videos
-           <ul>
-               <li>video1.mp4</li>
-               <li>video2.mp4</li>
-           </ul></li>
-   <li>results
+         <li>video1.mp4</li>
+         <li>video2.mp4</li>
+      </ul>
+   </li>
+   <li>models
       <ul>
-         <li>video1_1_keypoints.csv</li>
-         <li>video1_2_model.csv</li>
-         <li>video1_3_post.csv</li>
-         <li>video1_4_other.csv</li>
-         <li>video1_5_aggregate.csv</li>
-      </ul></li>
+         <li>nose-tail-keypoint.pt</li>
+         <li>behavior.pt</li>
+      </ul>
+   </li>
    <li>aggregate.py</li>
    <li>behavior.py</li>
    <li>keypoint.py</li>
    <li>other.py</li>
    <li>specify.py</li>
+   <li> project-directory 
+      <ul>
+      <li>first-frames
+         <ul>
+            <li>video1-0.json</li>
+            <li>video1-0.png</li>
+            <li>video2-0.json</li>
+            <li>video2-0.png</li>
+         </ul>
+      </li>
+      <li>results
+         <ul>
+            <li>video1_1_keypoints.csv</li>
+            <li>video1_2_model.csv</li>
+            <li>video1_3_post.csv</li>
+            <li>video1_4_other.csv</li>
+            <li>video1_5_aggregate.csv</li>
+         </ul>
+      </li>
+      <li>out_files
+         <ul>
+            <li>video1_1.out</li>
+            <li>video1_2.out</li>
+            <li>video1_3.out</li>
+            <li>video1_4.out</li>
+            <li>video1_5.out</li>
+         </ul>
+      </li>
       </ul>
    </li>
 </ul>
