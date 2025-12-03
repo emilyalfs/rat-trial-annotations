@@ -63,7 +63,7 @@ def main():
         freeze.close()
 
         # will be frame, pred
-        freeze_data = freeze_data.split("\n")
+        freeze_data = freeze_data.split("\n")[1:]
         freeze_data = [i.split(",") for i in freeze_data]
         freeze_data = [i for i in freeze_data if len(i)>1]
 
