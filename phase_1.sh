@@ -21,6 +21,8 @@ else
   fi  
 fi
 
+sbatch --job-name=$prefix-0 --output=./$project_name/out_files/$prefix-0.out 0_runner.sh $pth $project_name
+
 for file in $pth*.mp4; do
 	prefix=${file##*/}
 	prefix=${prefix::-4}
