@@ -53,5 +53,6 @@ You are now set to run NORT or EPM annotations. Check the corresponding director
          </li>
       </ul>
    </li>
+<li>environment (automatically created afters virtual environment setup)</li>
 </ul>
 
