@@ -1,67 +1,56 @@
-# NORT
+# Installation 
 
-1) Generate nose/tail keypoints (optionally prior to this, fine tune keypoint model further)
-   - keypoint.py generates file XXX_1_keypoints.csv
-2) Generate frame by frame behavior
-   - behavior.py generates file XXX_2_model.csv
-3) Post process general object interaction into specific
-   - specify.py generates file XXX_3_post.csv
-4) Process nose/tail keypoints for sustained behaviors
-   - other.py generates XXX_4_other.csv
-5) Aggregate the model behaviors and the sustained behaviors
-   - aggregate.py generates XXX_5_aggregate.csv
-6) Post process all trials to condense results into meaningful output
+Clone this repo to your computer. We recommend making a dedicated directory for this repo. From the terminal or command line: 
+- mkdir rat-trial-annotations
+- git clone git_repo_url rat-trial-annotations
 
-Download pretrained models <a href="https://ksuemailprod-my.sharepoint.com/:u:/g/personal/emilyalfs_ksu_edu/ESFgbrjK3S5ItHuYDFNulWQBR7myM2ouWYNqXovdDCcLfg?e=fCGTFT"> here</a>
+We also recommend setting up a dedicated virtual environment for the project. We have strayed away from using Anaconda due to licensing changes. From the terminal or command line
+- cd rat-trial-annotations
+- python -m venv environment
+- source environment/bin/activate
+- pip -r install requirements.txt
+
+
+Download pretrained models <a href="https://ksuemailprod-my.sharepoint.com/:u:/g/personal/emilyalfs_ksu_edu/ESFgbrjK3S5ItHuYDFNulWQBR7myM2ouWYNqXovdDCcLfg?e=fCGTFT"> here</a> in a folder called 'models' (see project files structure below). 
+
+You are now set to run NORT or EPM annotations. Check the corresponding directory for further instructions. 
 
 ## Project Structure
 
 <ul>
-   <li>raw-videos
-      <ul>
-         <li>video1.mp4</li>
-         <li>video2.mp4</li>
-      </ul>
-   </li>
-   <li>models
+      <li>models
       <ul>
          <li>nose-tail-keypoint.pt</li>
          <li>behavior.pt</li>
       </ul>
    </li>
-   <li>aggregate.py</li>
-   <li>behavior.py</li>
-   <li>keypoint.py</li>
-   <li>other.py</li>
-   <li>specify.py</li>
-   <li> project-directory 
+   <li>EPM
       <ul>
-      <li>first-frames
-         <ul>
-            <li>video1-0.json</li>
-            <li>video1-0.png</li>
-            <li>video2-0.json</li>
-            <li>video2-0.png</li>
-         </ul>
-      </li>
-      <li>results
-         <ul>
-            <li>video1_1_keypoints.csv</li>
-            <li>video1_2_model.csv</li>
-            <li>video1_3_post.csv</li>
-            <li>video1_4_other.csv</li>
-            <li>video1_5_aggregate.csv</li>
-         </ul>
-      </li>
-      <li>out_files
-         <ul>
-            <li>video1_1.out</li>
-            <li>video1_2.out</li>
-            <li>video1_3.out</li>
-            <li>video1_4.out</li>
-            <li>video1_5.out</li>
-         </ul>
-      </li>
+         <li> 0_local_runner.sh </li>
+         <li> 1_local_runner.sh </li>
+         <li> extract_first_frames.py</li>
+         <li> run_all_local.py</li>
+         <li>EXAMPLE
+            <ul>
+               <li>video_1.mp4</li>
+               <li>video_2.mp4</li>
+            </ul>
+         </li>
+      </ul>
+   </li>
+   <li>NORT
+      <ul>
+         <li> 0_local_runner.sh </li>
+         <li> 1_local_runner.sh </li>
+         <li> extract_first_frames.py</li>
+         <li> run_all_local.py</li>
+         <li> labels_to_nov_familiar.py </li>
+         <li>EXAMPLE
+            <ul>
+               <li>video_1.mp4</li>
+               <li>video_2.mp4</li>
+            </ul>
+         </li>
       </ul>
    </li>
 </ul>
