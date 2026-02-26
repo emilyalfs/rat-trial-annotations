@@ -518,7 +518,7 @@ def aggregate(proj,meta_data):
 
         # will be frame, pred
         with open(results_dir + short + "_5_aggregated.csv","w") as wrti:
-            wrti.write("frame num, label\n")
+            wrti.write("frame_id,label\n")
             for i in range(len(merge_data)):
                 wrti.write(f"{i}, {merg_result[i]}\n")
 
