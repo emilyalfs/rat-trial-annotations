@@ -1,0 +1,17 @@
+{
+"activities":["none","lower_ob","upper_ob","resting","freezing","standing"],
+"colors":["lawngreen","peru","teal","magenta","royalblue","darkorange"],
+"pretty_names":["None", "Lower", "Upper","Rest","Freeze","Stand"],
+"file_order":[],
+"file_type":"aggregated.csv",
+"lower_bound_seconds": 590, 
+"plot_stop_second": 600, 
+"plot_start_second": 0,
+"minute_increment": 2,
+"format_map": {"img_width":8.5, 
+          "img_height":8, 
+          "video_font_size":5,
+          "legend_font_size":12,
+          "img_save_name":"sample_nort_etho.svg"
+        } 
+}
