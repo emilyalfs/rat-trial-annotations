@@ -295,7 +295,7 @@ def specify(video_path, proj, num_objs):
 
 def score_freeze(nose_tails,avg_nt_dist,fps):
     motion_factor = 0.02 # v1= 0.03
-    nf_idle = fps         # Num frames to consider at rest (set to 1 second)
+    nf_idle = int(fps)         # Num frames to consider at rest (set to 1 second)
     activity = []
 
     in_idle = False
@@ -322,7 +322,7 @@ def score_freeze(nose_tails,avg_nt_dist,fps):
             moving_now = max(nsum,tsum) > motion_factor*avg_nt_dist
 
             if in_idle and moving_now:   # Was in idle, now moving, log activity range
-                activity.append( [ istart, i-1 ] )
+                activity.append( [ istart, i-1] )
                 in_idle = False
                 istart = i
             #elif in_idle and not moving:  # Still at rest, do nothing
@@ -335,7 +335,7 @@ def score_freeze(nose_tails,avg_nt_dist,fps):
 
 def score_rest(nose_tails,avg_nt_dist,fps):
     motion_factor = 0.02 # v1= 0.03
-    nf_idle = fps         # Num frames to consider at rest (set to 1 second)
+    nf_idle = int(fps)         # Num frames to consider at rest (set to 1 second)
     activity = []
 
     in_idle = False
@@ -358,7 +358,7 @@ def score_rest(nose_tails,avg_nt_dist,fps):
             moving_now = tsum  > motion_factor*avg_nt_dist
 
             if in_idle and moving_now:   # Was in idle, now moving, log activity range
-                activity.append( [ istart, i-1 ] )
+                activity.append( [ istart, i-1] )
                 in_idle = False
                 istart = i
             #elif in_idle and not moving:  # Still at rest, do nothing
@@ -413,8 +413,8 @@ def others(video_path, proj, num_obs, fps, bin_sec_size=30):
     for i in range(nframes):
         merged_res.append([str(i),"none"])
 
-    rest = score_rest(nt_data,avg_nt_dist)
-    freeze = score_freeze(nt_data,avg_nt_dist)
+    rest = score_rest(nt_data,avg_nt_dist,fps)
+    freeze = score_freeze(nt_data,avg_nt_dist,fps)
 
     for r in rest:
         start, stop = r[0], r[1]
@@ -518,7 +518,7 @@ def aggregate(proj,meta_data):
 
         # will be frame, pred
         with open(results_dir + short + "_5_aggregated.csv","w") as wrti:
-            wrti.write("frame_id,label\n")
+            wrti.write("frame num, label\n")
             for i in range(len(merge_data)):
                 wrti.write(f"{i}, {merg_result[i]}\n")
 
