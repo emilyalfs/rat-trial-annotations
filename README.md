@@ -11,7 +11,7 @@ We also recommend setting up a dedicated virtual environment for the project. We
 - pip -r install requirements.txt
 
 
-Download pretrained models <a href="https://ksuemailprod-my.sharepoint.com/:u:/g/personal/emilyalfs_ksu_edu/ESFgbrjK3S5ItHuYDFNulWQBR7myM2ouWYNqXovdDCcLfg?e=fCGTFT"> here</a> in a folder called 'models' (see project files structure below). 
+Download pretrained models <a href="https://ksuemailprod-my.sharepoint.com/:u:/g/personal/emilyalfs_ksu_edu/IQAhYG64yt0uSLR7mAxTbpVkATuJuzCoki94EpxzL9aO46U?e=e61ibn"> here</a> in a folder called 'models' (see project files structure below). 
 
 You are now set to run NORT or EPM annotations. Check the corresponding directory for further instructions. 
 
